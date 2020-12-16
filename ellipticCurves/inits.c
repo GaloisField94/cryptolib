@@ -8,6 +8,7 @@ void ec_p_init(EC_p *rop, const mpz_t a, const mpz_t b, const mpz_t p) {
 	mpz_set(rop->a, a);
 	mpz_set(rop->b, b);
 	mpz_set(rop->p, p);
+	rop->isOptimized = isOptimized(rop);
 }
 
 void ec_p_init_str(EC_p *rop, const char *a, const char *b, const char *p, int base) {
@@ -15,6 +16,7 @@ void ec_p_init_str(EC_p *rop, const char *a, const char *b, const char *p, int b
 	mpz_set_str(rop->a, a, base);
 	mpz_set_str(rop->b, b, base);
 	mpz_set_str(rop->p, p, base);
+	rop->isOptimized = isOptimized(rop);
 }
 
 void ec_p_init_compute_q_h(EC_p *rop, const mpz_t a, const mpz_t b, const mpz_t p) {
@@ -32,6 +34,7 @@ void ec_p_init_all(EC_p *rop, const mpz_t a, const mpz_t b, const mpz_t p, const
 	mpz_set(rop->p, p);
 	mpz_set(rop->q, q);
 	mpz_set(rop->h, h);
+	rop->isOptimized = isOptimized(rop);
 }
 
 void ec_p_init_all_str(EC_p *rop, const char *a, const char *b, const char *p, const char *q, const char *h, int base) {
@@ -41,6 +44,7 @@ void ec_p_init_all_str(EC_p *rop, const char *a, const char *b, const char *p, c
 	mpz_set_str(rop->p, p, base);
 	mpz_set_str(rop->q, q, base);
 	mpz_set_str(rop->h, h, base);
+	rop->isOptimized = isOptimized(rop);
 }
 
 void ec_p_init_name(EC_p *rop, const EC_pName name) {
@@ -52,6 +56,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "E95E4A5F737059DC60DFC7AD95B3D8139515620F", 16);
 			mpz_set_str(rop->q, "E95E4A5F737059DC60DF5991D45029409E60FC09", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 0;
 			return;
 		case brainpoolP160t1:
 			mpz_set_str(rop->a, "E95E4A5F737059DC60DFC7AD95B3D8139515620C", 16);
@@ -59,6 +64,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "E95E4A5F737059DC60DFC7AD95B3D8139515620F", 16);
 			mpz_set_str(rop->q, "E95E4A5F737059DC60DF5991D45029409E60FC09", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 1;
 			return;	
 		case brainpoolP192r1:
 			mpz_set_str(rop->a, "6A91174076B1E0E19C39C031FE8685C1CAE040E5C69A28EF", 16);
@@ -66,6 +72,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "C302F41D932A36CDA7A3463093D18DB78FCE476DE1A86297", 16);
 			mpz_set_str(rop->q, "C302F41D932A36CDA7A3462F9E9E916B5BE8F1029AC4ACC1", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 0;
 			return;
 		case brainpoolP192t1:
 			mpz_set_str(rop->a, "C302F41D932A36CDA7A3463093D18DB78FCE476DE1A86294", 16);
@@ -73,6 +80,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "C302F41D932A36CDA7A3463093D18DB78FCE476DE1A86297", 16);
 			mpz_set_str(rop->q, "C302F41D932A36CDA7A3462F9E9E916B5BE8F1029AC4ACC1", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 1;
 			return;	
 		case brainpoolP224r1:
 			mpz_set_str(rop->a, "68A5E62CA9CE6C1C299803A6C1530B514E182AD8B0042A59CAD29F43", 16);
@@ -80,6 +88,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "D7C134AA264366862A18302575D1D787B09F075797DA89F57EC8C0FF", 16);
 			mpz_set_str(rop->q, "D7C134AA264366862A18302575D0FB98D116BC4B6DDEBCA3A5A7939F", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 0;
 			return;
 		case brainpoolP224t1:
 			mpz_set_str(rop->a, "D7C134AA264366862A18302575D1D787B09F075797DA89F57EC8C0FC", 16);
@@ -87,6 +96,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "D7C134AA264366862A18302575D1D787B09F075797DA89F57EC8C0FF", 16);
 			mpz_set_str(rop->q, "D7C134AA264366862A18302575D0FB98D116BC4B6DDEBCA3A5A7939F", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 1;
 			return;	
 		case brainpoolP256r1:
 			mpz_set_str(rop->a, "7D5A0975FC2C3057EEF67530417AFFE7FB8055C126DC5C6CE94A4B44F330B5D9", 16);
@@ -94,6 +104,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "A9FB57DBA1EEA9BC3E660A909D838D726E3BF623D52620282013481D1F6E5377", 16);
 			mpz_set_str(rop->q, "A9FB57DBA1EEA9BC3E660A909D838D718C397AA3B561A6F7901E0E82974856A7", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 0;
 			return;
 		case brainpoolP256t1:
 			mpz_set_str(rop->a, "A9FB57DBA1EEA9BC3E660A909D838D726E3BF623D52620282013481D1F6E5374", 16);
@@ -101,6 +112,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "A9FB57DBA1EEA9BC3E660A909D838D726E3BF623D52620282013481D1F6E5377", 16);
 			mpz_set_str(rop->q, "A9FB57DBA1EEA9BC3E660A909D838D718C397AA3B561A6F7901E0E82974856A7", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 1;
 			return;	
 		case brainpoolP320r1:
 			mpz_set_str(rop->a, "3EE30B568FBAB0F883CCEBD46D3F3BB8A2A73513F5EB79DA66190EB085FFA9F492F375A97D860EB4", 16);
@@ -108,6 +120,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "D35E472036BC4FB7E13C785ED201E065F98FCFA6F6F40DEF4F92B9EC7893EC28FCD412B1F1B32E27", 16);
 			mpz_set_str(rop->q, "D35E472036BC4FB7E13C785ED201E065F98FCFA5B68F12A32D482EC7EE8658E98691555B44C59311", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 0;
 			return;
 		case brainpoolP320t1:
 			mpz_set_str(rop->a, "D35E472036BC4FB7E13C785ED201E065F98FCFA6F6F40DEF4F92B9EC7893EC28FCD412B1F1B32E24", 16);
@@ -115,6 +128,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "D35E472036BC4FB7E13C785ED201E065F98FCFA6F6F40DEF4F92B9EC7893EC28FCD412B1F1B32E27", 16);
 			mpz_set_str(rop->q, "D35E472036BC4FB7E13C785ED201E065F98FCFA5B68F12A32D482EC7EE8658E98691555B44C59311", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 1;
 			return;	
 		case brainpoolP384r1:
 			mpz_set_str(rop->a, "7BC382C63D8C150C3C72080ACE05AFA0C2BEA28E4FB22787139165EFBA91F90F8AA5814A503AD4EB04A8C7DD22CE2826", 16);
@@ -122,6 +136,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "8CB91E82A3386D280F5D6F7E50E641DF152F7109ED5456B412B1DA197FB71123ACD3A729901D1A71874700133107EC53", 16);
 			mpz_set_str(rop->q, "8CB91E82A3386D280F5D6F7E50E641DF152F7109ED5456B31F166E6CAC0425A7CF3AB6AF6B7FC3103B883202E9046565", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 0;
 			return;
 		case brainpoolP384t1:
 			mpz_set_str(rop->a, "8CB91E82A3386D280F5D6F7E50E641DF152F7109ED5456B412B1DA197FB71123ACD3A729901D1A71874700133107EC50", 16);
@@ -129,6 +144,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "8CB91E82A3386D280F5D6F7E50E641DF152F7109ED5456B412B1DA197FB71123ACD3A729901D1A71874700133107EC53", 16);
 			mpz_set_str(rop->q, "8CB91E82A3386D280F5D6F7E50E641DF152F7109ED5456B31F166E6CAC0425A7CF3AB6AF6B7FC3103B883202E9046565", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 1;
 			return;	
 		case brainpoolP512r1:
 			mpz_set_str(rop->a, "7830A3318B603B89E2327145AC234CC594CBDD8D3DF91610A83441CAEA9863BC2DED5D5AA8253AA10A2EF1C98B9AC8B57F1117A72BF2C7B9E7C1AC4D77FC94CA", 16);
@@ -136,6 +152,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "AADD9DB8DBE9C48B3FD4E6AE33C9FC07CB308DB3B3C9D20ED6639CCA703308717D4D9B009BC66842AECDA12AE6A380E62881FF2F2D82C68528AA6056583A48F3", 16);
 			mpz_set_str(rop->q, "AADD9DB8DBE9C48B3FD4E6AE33C9FC07CB308DB3B3C9D20ED6639CCA70330870553E5C414CA92619418661197FAC10471DB1D381085DDADDB58796829CA90069", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 0;
 			return;
 		case brainpoolP512t1:
 			mpz_set_str(rop->a, "AADD9DB8DBE9C48B3FD4E6AE33C9FC07CB308DB3B3C9D20ED6639CCA703308717D4D9B009BC66842AECDA12AE6A380E62881FF2F2D82C68528AA6056583A48F0", 16);
@@ -143,6 +160,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "AADD9DB8DBE9C48B3FD4E6AE33C9FC07CB308DB3B3C9D20ED6639CCA703308717D4D9B009BC66842AECDA12AE6A380E62881FF2F2D82C68528AA6056583A48F3", 16);
 			mpz_set_str(rop->q, "AADD9DB8DBE9C48B3FD4E6AE33C9FC07CB308DB3B3C9D20ED6639CCA70330870553E5C414CA92619418661197FAC10471DB1D381085DDADDB58796829CA90069", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 1;
 			return;	
 		case secp192k1:
 			mpz_set_str(rop->a, "000000000000000000000000000000000000000000000000", 16);
@@ -150,6 +168,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFEE37", 16);
 			mpz_set_str(rop->q, "FFFFFFFFFFFFFFFFFFFFFFFE26F2FC170F69466A74DEFD8D", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 0;
 			return;
 		case secp192r1:
 			mpz_set_str(rop->a, "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFFFFFFFFFC", 16);
@@ -157,6 +176,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFFFFFFFFFF", 16);
 			mpz_set_str(rop->q, "FFFFFFFFFFFFFFFFFFFFFFFF99DEF836146BC9B1B4D22831", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 1;
 			return;
 		case secp224k1:
 			mpz_set_str(rop->a, "00000000000000000000000000000000000000000000000000000000", 16);
@@ -164,6 +184,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFE56D", 16);
 			mpz_set_str(rop->q, "010000000000000000000000000001DCE8D2EC6184CAF0A971769FB1F7", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 0;
 			return;
 		case secp224r1:
 			mpz_set_str(rop->a, "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFE", 16);
@@ -171,6 +192,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000001", 16);
 			mpz_set_str(rop->q, "FFFFFFFFFFFFFFFFFFFFFFFFFFFF16A2E0B8F03E13DD29455C5C2A3D", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 1;
 			return;
 		case secp256k1:
 			mpz_set_str(rop->a, "0000000000000000000000000000000000000000000000000000000000000000", 16);
@@ -178,6 +200,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F", 16);
 			mpz_set_str(rop->q, "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 0;
 			return;
 		case secp256r1:
 			mpz_set_str(rop->a, "FFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFC", 16);
@@ -185,6 +208,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "FFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF", 16);
 			mpz_set_str(rop->q, "FFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC632551", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 1;
 			return;
 		case secp384r1:
 			mpz_set_str(rop->a, "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFF0000000000000000FFFFFFFC", 16);
@@ -192,6 +216,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFFFF0000000000000000FFFFFFFF", 16);
 			mpz_set_str(rop->q, "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC7634D81F4372DDF581A0DB248B0A77AECEC196ACCC52973", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 1;
 			return;
 		case secp521r1:
 			mpz_set_str(rop->a, "01FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC", 16);
@@ -199,6 +224,7 @@ void ec_p_init_name(EC_p *rop, const EC_pName name) {
 			mpz_set_str(rop->p, "01FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", 16);
 			mpz_set_str(rop->q, "01FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA51868783BF2F966B7FCC0148F709A5D03BB5C9B8899C47AEBB6FB71E91386409", 16);
 			mpz_set_str(rop->h, "1", 16);
+			rop->isOptimized = 1;
 			return;	
 		default: 
 			return;	

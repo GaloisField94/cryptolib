@@ -13,6 +13,7 @@ typedef struct{
 	mpz_t p;
 	mpz_t q;
 	mpz_t h;
+	int isOptimized;
 } EC_p;
 /**
  * @brief A point possibly fulfilling an elliptic curve equation over a prime field GF(p).
@@ -51,6 +52,10 @@ typedef enum{
 	secp384r1,
 	secp521r1
 } EC_pName;
+
+//----------------------------------------------------------------------------------------------
+// EC_p inits
+//----------------------------------------------------------------------------------------------
 
 /**
  * @brief Initialize rop and set its values a, b and p (q, h set to 0).
@@ -121,6 +126,10 @@ void ec_p_init_all_str(EC_p *rop, const char *a, const char *b, const char *p, c
  */
 void ec_p_init_name(EC_p *rop, const EC_pName name);
 
+//----------------------------------------------------------------------------------------------
+// EC_pPoint inits
+//----------------------------------------------------------------------------------------------
+
 /**
  * @brief Initialize rop and set its values x and y (z set to 1).
  * 
@@ -165,6 +174,10 @@ void ec_pPoint_init_all_str(EC_pPoint *rop, const char *x, const char *y, const 
  */
 void ec_pPoint_init_name(EC_pPoint *rop, const EC_pName name);
 
+//----------------------------------------------------------------------------------------------
+// High level arithmetics
+//----------------------------------------------------------------------------------------------
+
 /**
  * @brief Adds two points on given elliptic curve. Please note that no check if the points belong to the curves additive group is performed.
  * 
@@ -175,6 +188,14 @@ void ec_pPoint_init_name(EC_pPoint *rop, const EC_pName name);
  */
 void ec_p_add(EC_pPoint *rop, const EC_pPoint *op1, const EC_pPoint *op2, const EC_p *curve);
 /**
+ * @brief Doubles a point on given elliptic curve. Please note that no check if the point belongs to the curves additive group is performed.
+ * 
+ * @param rop The result.
+ * @param op 
+ * @param curve 
+ */
+void ec_p_double(EC_pPoint *rop, const EC_pPoint *op, const EC_p *curve);
+/**
  * @brief Multiplies given point by n on given elliptic curve. Please note that no check if the point belongs to the curves additive group is performed, neither if n < q (the latter is relevant only for performance). 
  * 
  * @param rop The result.
@@ -183,6 +204,10 @@ void ec_p_add(EC_pPoint *rop, const EC_pPoint *op1, const EC_pPoint *op2, const 
  * @param curve 
  */
 void ec_p_mul(EC_pPoint *rop, const EC_pPoint *op1, const mpz_t n, const EC_p *curve);
+
+//----------------------------------------------------------------------------------------------
+// MISC
+//----------------------------------------------------------------------------------------------
 
 /**
  * @brief Computes parameters q and h given a, b and p.
@@ -194,5 +219,75 @@ void ec_p_mul(EC_pPoint *rop, const EC_pPoint *op1, const mpz_t n, const EC_p *c
  * @param p 
  */
 void ec_p_compute_q_h(mpz_t q, mpz_t h, const mpz_t a, const mpz_t b, const mpz_t p);
+/**
+ * @brief Compares points on a given elliptic curve.
+ * 
+ * @param op1 
+ * @param op2 
+ * @param curve 
+ * @return 1 if points are equivalent, 0 otherwise.
+ */
+int areEqual(const EC_pPoint *op1, const EC_pPoint *op2, const EC_p *curve);
+/**
+ * @brief Checks if the point is infinite.
+ * 
+ * @param op 
+ * @return 1 if the point is infinite, 0 otherwise.
+ */
+int isInfinite(const EC_pPoint *op);
+/**
+ * @brief Checks if a = -3 (mod p)
+ * 
+ * @param op 
+ * @return 1 if a = -3 (mod p), 0 otherwise.  
+ */
+int isOptimized(const EC_p *op);
+
+//----------------------------------------------------------------------------------------------
+// Low level arithmetics
+//----------------------------------------------------------------------------------------------
+
+/**
+ * @brief Adds two points on given elliptic curve. Please note that no check if the points belong to the curves additive group is performed.
+ * 
+ * @param rop The result.
+ * @param op1 
+ * @param op2 
+ * @param curve
+ */
+void ec_p_add_aff(EC_pPoint *rop, const EC_pPoint *op1, const EC_pPoint *op2, const EC_p *curve);
+/**
+ * @brief Doubles a point on given elliptic curve. Please note that no check if the point belongs to the curves additive group is performed.
+ * 
+ * @param rop The result.
+ * @param op 
+ * @param curve 
+ */
+void ec_p_double_aff(EC_pPoint *rop, const EC_pPoint *op, const EC_p *curve);
+/**
+ * @brief Adds two points on given elliptic curve. Please note that no check if the points belong to the curves additive group is performed.
+ * 
+ * @param rop The result.
+ * @param op1 
+ * @param op2 
+ * @param curve
+ */
+void ec_p_add_pro(EC_pPoint *rop, const EC_pPoint *op1, const EC_pPoint *op2, const EC_p *curve);
+/**
+ * @brief Doubles a point on given elliptic curve. Please note that no check if the point belongs to the curves additive group is performed.
+ * 
+ * @param rop The result.
+ * @param op 
+ * @param curve 
+ */
+void ec_p_double_pro(EC_pPoint *rop, const EC_pPoint *op, const EC_p *curve);
+/**
+ * @brief Doubles a point on given elliptic curve, where a = -3 (mod p). Please note that no check if the point belongs to the curves additive group or if a = -3 (mod p) is performed.
+ * 
+ * @param rop The result.
+ * @param op 
+ * @param curve 
+ */
+void ec_p_double_pro_3(EC_pPoint *rop, const EC_pPoint *op, const EC_p *curve);
 
 #endif
